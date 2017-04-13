@@ -47,6 +47,7 @@ func (p *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		case "304NotModified":
 			is304 = true
 			// continue so other headers get set appropriately
+			break
 		default:
 			log.Printf("Error: %v %v", awsErr.Code(), awsErr.Message())
 			http.Error(rw, "Internal Error", 500)
