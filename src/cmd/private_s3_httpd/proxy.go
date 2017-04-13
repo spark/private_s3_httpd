@@ -41,7 +41,7 @@ func (p *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	resp, err := p.Svc.GetObject(input)
 	if awsErr, ok := err.(awserr.Error); ok {
 		switch awsErr.Code() {
-		case "NoSuchKey":
+		case s3.ErrCodeNoSuchKey:
 			http.Error(rw, "Page Not Found", 404)
 			return
 		case "304NotModified":
@@ -82,9 +82,9 @@ func (p *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	if is304 {
 		rw.WriteHeader(304)
+	} else {
+		io.Copy(rw, resp.Body)
 	}
-
-	io.Copy(rw, resp.Body)
 	resp.Body.Close()
 }
 
