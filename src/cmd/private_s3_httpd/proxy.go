@@ -45,9 +45,9 @@ func (p *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 			http.Error(rw, "Page Not Found", 404)
 			return
 		case "304NotModified":
+		case "NotModified":
 			is304 = true
 			// continue so other headers get set appropriately
-			break
 		default:
 			log.Printf("Error: %v %v", awsErr.Code(), awsErr.Message())
 			http.Error(rw, "Internal Error", 500)
