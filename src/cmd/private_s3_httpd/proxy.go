@@ -82,10 +82,12 @@ func (p *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	if is304 {
 		rw.WriteHeader(304)
-	} else {
-		io.Copy(rw, resp.Body)
 	}
-	resp.Body.Close()
+
+	if resp.Body {
+		io.Copy(rw, resp.Body)
+		resp.Body.Close()
+	}
 }
 
 // resp, err := svc.ListObjects(&s3.ListObjectsInput{
