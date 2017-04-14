@@ -84,7 +84,7 @@ func (p *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(304)
 	}
 
-	if resp.Body {
+	if resp.Body != nil {
 		io.Copy(rw, resp.Body)
 		resp.Body.Close()
 	}
